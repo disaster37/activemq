@@ -6,6 +6,7 @@ ACTIVEMQ_VERSION=5.10.0
 ACTIVEMQ_HOME="/opt/activemq"
 SETUP_DIR="/app/setup"
 LOG_DIR="/var/log"
+DATA_DIR="/data"
 
 # Start install
 mkdir -p ${ACTIVEMQ_HOME}
@@ -24,10 +25,11 @@ useradd --system --home ${ACTIVEMQ_HOME} -g activemq activemq
 
 # we move folder dir to activemq
 cp ${SETUP_DIR}/config/* ${ACTIVEMQ_HOME}/conf/
-cp ${SETUP_DIR}/bin/* ${ACTIVEMQ_HOME}/bin/
+cp ${SETUP_DIR}/bin/* ${ACTIVEMQ_HOME}/bin/linux-x86-64/
 
 chown -R activemq:activemq ${ACTIVEMQ_HOME}
-
+chown -R activemq:activemq ${DATA_DIR}/activemq
+chown -R activemq:activemq ${LOG_DIR}/activemq
 
 
 
@@ -80,6 +82,6 @@ command=/opt/activemq/bin/linux-x86-64/activemq console
 user=root
 autostart=true
 autorestart=true
-stdout_logfile=${GITLAB_LOG_DIR}/supervisor/%(program_name)s.log
-stderr_logfile=${GITLAB_LOG_DIR}/supervisor/%(program_name)s.log
+stdout_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
 EOF

@@ -41,8 +41,8 @@ VOLUME ["/data/activemq"]
 VOLUME ["/var/log/activemq"]
 VOLUME ["/opt/activemq/conf"]
 
-WORKDIR /opt/activemq
+#WORKDIR /opt/activemq
 
-ENTRYPOINT ["/app/init"]
-CMD ["/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf"]
+#ENTRYPOINT ["/app/init"]
+CMD ["/app/init", "start"]
 

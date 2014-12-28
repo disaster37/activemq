@@ -4,7 +4,9 @@ set -e
 
 SETUP_DIR="/app/setup"
 ACTIVEMQ_HOME="/opt/activemq"
-
+ACTIVEMQ_DATA="/data/activemq"
+ACTIVEMQ_CONF="${ACTIVEMQ_HOME}/conf"
+ACTIVEMQ_LOG="/var/log/activemq"
 
 
 # ActiveMQ setting
@@ -105,7 +107,20 @@ if [ "${ACTIVEMQ_STATIC_QUEUES}X" != "X" ]; then
 fi
 if [ "${ACTIVEMQ_PERSISTENT_TOPIC}X" != "X" ] || [ "${ACTIVEMQ_PERSISTENT_QUEUE}X" != "X" ]; then
 	sudo -u activemq -H sed 's/{{ACTIVEMQ_PERSISTENT_DESTINATION}}/'"<destinations>${ACTIVEMQ_PERSISTENT_QUEUE} ${ACTIVEMQ_PERSISTENT_TOPIC} </destinations>"'/' -i conf/activemq.xml
+else 
+	sudo -u activemq -H sed 's/{{ACTIVEMQ_PERSISTENT_DESTINATION}}/'""'/' -i conf/activemq.xml
 fi
 
 
+chown -R activemq:activemq ${ACTIVEMQ_DATA}
+chown -R activemq:activemq ${ACTIVEMQ_LOG}
+chown -R activemq:activemq ${ACTIVEMQ_CONF}
 
+case "$1" in
+  start)
+	/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf    
+    ;;
+esac
+
+
+exit 0
