@@ -41,6 +41,16 @@ Current Version: **5.10.0**
 - 512MB is too little memory, i think is to use ActiveMQ on test environment
 - **1GB** is the **standard** memory size
 
+You can set the memory that you need :
+
+```bash
+docker run ... \
+	-e 'ACTIVEMQ_MIN_MEMORY=512' \
+	-e 'ACTIVEMQ_MAX_MEMORY=2048'
+
+```
+This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ can take 2048 MB of max memory
+
 ## Storage
 
 The necessary hard drive space depends if you use persistant message or not and the type of appender. Normaly, no need space for ActiveMQ because the most data are contains directly on memory.
@@ -174,6 +184,8 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_TEMP_USAGE**: The maximum amount of space temp the broker will use before disabling caching and/or slowing down producers. Default to `50 gb`
 - **ACTIVEMQ_MAX_CONNECTION**: It's DOS protection. It limit concurrent connections. Default to `1000`
 - **ACTIVEMQ_FRAME_SIZE**: It's DOS protection. It limit the frame size. Default to `104857600` (100MB)
+- **ACTIVEMQ_MIN_MEMORY**: The init memory in MB that ActiveMQ take when start (it's like XMS). Default to `128` (128 MB)
+- **ACTIVEMQ_MAX_MEMORY**: The max memory in MB that ActiveMQ can take (it's like XMX). Default to `1024` (1024 MB)
 
 - **ACTIVEMQ_ADMIN_LOGIN**: The login for admin account (broker and web console). Default to `admin` 
 - **ACTIVEMQ_ADMIN_PASSWORD**: The password for admin account. Default to `admin`

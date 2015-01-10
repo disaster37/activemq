@@ -17,7 +17,8 @@ ACTIVEMQ_STORAGE_USAGE=${ACTIVEMQ_STORAGE_USAGE:-"100 gb"}
 ACTIVEMQ_TEMP_USAGE=${ACTIVEMQ_TEMP_USAGE:-"50 gb"}
 ACTIVEMQ_MAX_CONNECTION=${ACTIVEMQ_MAX_CONNECTION:-1000}
 ACTIVEMQ_FRAME_SIZE=${ACTIVEMQ_FRAME_SIZE:-104857600}
-
+ACTIVEMQ_MIN_MEMORY=${ACTIVEMQ_MIN_MEMORY:-128}
+ACTIVEMQ_MAX_MEMORY=${ACTIVEMQ_MAX_MEMORY:-1024}
 
 # Users settings
 ACTIVEMQ_ADMIN_LOGIN=${ACTIVEMQ_ADMIN_LOGIN:-admin}
@@ -111,7 +112,11 @@ else
 	sudo -u activemq -H sed 's/{{ACTIVEMQ_PERSISTENT_DESTINATION}}/'""'/' -i conf/activemq.xml
 fi
 
+# We setting the wrapper.conf file (this is the main setting of wrapper)
+sudo -u activemq -H sed 's/{{ACTIVEMQ_MIN_MEMORY}}/'"${ACTIVEMQ_MIN_MEMORY}"'/' -i bin/linux-x86-64/wrapper.conf
+sudo -u activemq -H sed 's/{{ACTIVEMQ_MAX_MEMORY}}/'"${ACTIVEMQ_MAX_MEMORY}"'/' -i bin/linux-x86-64/wrapper.conf
 
+# We fix some problem about right
 chown -R activemq:activemq ${ACTIVEMQ_DATA}
 chown -R activemq:activemq ${ACTIVEMQ_LOG}
 chown -R activemq:activemq ${ACTIVEMQ_CONF}
