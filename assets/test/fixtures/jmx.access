@@ -15,7 +15,4 @@
 ## limitations under the License.
 ## ---------------------------------------------------------------------------
 
-# Defines users that can access the web (console, demo, etc.)
-# username: password [,rolename ...]
-{{ACTIVEMQ_ADMIN}}
-{{ACTIVEMQ_USER}}
+admin readwrite

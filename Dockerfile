@@ -16,11 +16,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the app setting
-COPY assets/config/ /app/setup/config/
-COPY assets/bin/ /app/setup/bin/
-COPY assets/init /app/init
-RUN chmod 755 /app/init
-RUN chmod 775 /app/setup/bin/*
+COPY assets/init.py /app/init.py
+RUN chmod 755 /app/init.py
 
 
 # Lauch app install
@@ -44,5 +41,5 @@ VOLUME ["/opt/activemq/conf"]
 #WORKDIR /opt/activemq
 
 #ENTRYPOINT ["/app/init"]
-CMD ["/app/init", "start"]
+CMD ["/app/init.py", "start"]
 

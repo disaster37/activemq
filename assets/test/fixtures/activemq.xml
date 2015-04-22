@@ -29,7 +29,7 @@
     </bean>
 
    <!-- Allows accessing the server log -->
-    <bean id="logQuery" class="org.fusesource.insight.log.log4j.Log4jLogQuery"
+    <bean id="logQuery" class="io.fabric8.insight.log.log4j.Log4jLogQuery"
           lazy-init="false" scope="singleton"
           init-method="start" destroy-method="stop">
     </bean>
@@ -37,7 +37,7 @@
     <!--
         The <broker> element is used to configure the ActiveMQ broker.
     -->
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="{{ACTIVEMQ_NAME}}" dataDirectory="/data/activemq">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="${activemq.data}">
 
         <destinationPolicy>
             <policyMap>
@@ -52,7 +52,7 @@
 
                     -->
                   <pendingMessageLimitStrategy>
-                    <constantPendingMessageLimitStrategy limit="{{ACTIVEMQ_PENDING_MESSAGE_LIMIT}}"/>
+                    <constantPendingMessageLimitStrategy limit="1000"/>
                   </pendingMessageLimitStrategy>
                 </policyEntry>
               </policyEntries>
@@ -79,7 +79,7 @@
             http://activemq.apache.org/persistence.html
         -->
         <persistenceAdapter>
-            <kahaDB directory="/data/activemq/kahadb"/>
+            <kahaDB directory="${activemq.data}/kahadb"/>
         </persistenceAdapter>
 
 
@@ -91,13 +91,13 @@
           <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage percentOfJvmHeap="100" />
+                    <memoryUsage percentOfJvmHeap="70" />
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="{{ACTIVEMQ_STORAGE_USAGE}}"/>
+                    <storeUsage limit="100 gb"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="{{ACTIVEMQ_TEMP_USAGE}}"/>
+                    <tempUsage limit="50 gb"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
@@ -110,40 +110,17 @@
         -->
         <transportConnectors>
             <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB -->
-            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections={{ACTIVEMQ_MAX_CONNECTION}}&amp;wireFormat.maxFrameSize={{ACTIVEMQ_FRAME_SIZE}}"/>
-            <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections={{ACTIVEMQ_MAX_CONNECTION}}&amp;wireFormat.maxFrameSize={{ACTIVEMQ_FRAME_SIZE}}"/>
-            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections={{ACTIVEMQ_MAX_CONNECTION}}&amp;wireFormat.maxFrameSize={{ACTIVEMQ_FRAME_SIZE}}"/>
-            <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections={{ACTIVEMQ_MAX_CONNECTION}}&amp;wireFormat.maxFrameSize={{ACTIVEMQ_FRAME_SIZE}}"/>
-            <transportConnector name="ws" uri="ws://0.0.0.0:61614?maximumConnections={{ACTIVEMQ_MAX_CONNECTION}}&amp;wireFormat.maxFrameSize={{ACTIVEMQ_FRAME_SIZE}}"/>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="ws" uri="ws://0.0.0.0:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->
         <shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
         </shutdownHooks>
-
-	{{ACTIVEMQ_PERSISTENT_DESTINATION}}
-
-	<plugins>
-      		<!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-      		<jaasAuthenticationPlugin configuration="activemq-domain" />
-		<authorizationPlugin>
-        		<map>
-          			<authorizationMap>
-            				<authorizationEntries>
-              					<authorizationEntry queue=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
-              					<authorizationEntry topic=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
-              					<authorizationEntry topic="ActiveMQ.Advisory.>" read="admins,reads,writes,owners" write="admins,reads,writes,owners" admin="admins,reads,writes,owners"/>
-            				</authorizationEntries>
-             
-            				<!-- let's assign roles to temporary destinations. comment this entry if we don't want any roles assigned to temp destinations  -->
-            				<tempDestinationAuthorizationEntry>  
-              					<tempDestinationAuthorizationEntry read="tempDestinationAdmins" write="tempDestinationAdmins" admin="tempDestinationAdmins"/>
-           				</tempDestinationAuthorizationEntry>               
-          			</authorizationMap>
-        		</map>
-      		</authorizationPlugin>
-	</plugins>
 
     </broker>
 

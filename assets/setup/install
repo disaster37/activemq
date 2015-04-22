@@ -23,10 +23,6 @@ groupadd activemq
 useradd --system --home ${ACTIVEMQ_HOME} -g activemq activemq
 
 
-# we move folder dir to activemq
-cp ${SETUP_DIR}/config/* ${ACTIVEMQ_HOME}/conf/
-cp ${SETUP_DIR}/bin/* ${ACTIVEMQ_HOME}/bin/linux-x86-64/
-
 chown -R activemq:activemq ${ACTIVEMQ_HOME}
 chown -R activemq:activemq ${DATA_DIR}/activemq
 chown -R activemq:activemq ${LOG_DIR}/activemq
@@ -36,13 +32,14 @@ chown -R activemq:activemq ${LOG_DIR}/activemq
 # We setup logrotate for activemq
 cat > /etc/logrotate.d/activemq <<EOF
 ${LOG_DIR}/activemq/*.log {
+  su activemq activemq
   daily
   missingok
   rotate 10
   compress
-  delaycompress
-  notifempty
   copytruncate
+  dateext
+  dateformat -%Y-%m-%d
 }
 EOF
 
@@ -53,9 +50,9 @@ ${LOG_DIR}/supervisor/*.log {
   missingok
   rotate 10
   compress
-  delaycompress
-  notifempty
   copytruncate
+  dateext
+  dateformat -%Y-%m-%d
 }
 EOF
 
