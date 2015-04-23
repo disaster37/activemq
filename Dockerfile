@@ -1,6 +1,6 @@
 #ActiveMQ 5.10.0
 
-FROM webcenter/openjdk:jre-8-headless
+FROM webcenter/openjdk-jre:8
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
 # Update distro and install some packages
