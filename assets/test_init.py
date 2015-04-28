@@ -17,6 +17,7 @@ class InitTestCase(unittest.TestCase):
         shutil.copy2("test/fixtures/wrapper.conf", "test/tmp/bin/linux-x86-64/")
         shutil.copy2("test/fixtures/activemq", "test/tmp/bin/linux-x86-64/")
         init.ACTIVEMQ_HOME = "test/tmp";
+	init.ACTIVEMQ_CONF = init.ACTIVEMQ_HOME + '/conf'
 
 
     #@classmethod
@@ -189,6 +190,7 @@ class InitTestCase(unittest.TestCase):
 
         self.assertRegexpMatches(contend, "set.default.ACTIVEMQ_DATA=/data/activemq", "Problem when init the wrapper.conf")
         self.assertRegexpMatches(contend, "wrapper.logfile=/var/log/activemq/wrapper.log", "Problem when init the wrapper.conf")
+	self.assertRegexpMatches(contend, "set.default.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%/conf.tmp", "Problem when init the wrapper.conf")
 
         # We check the value on log4j
         file = open(init.ACTIVEMQ_HOME +'/conf/log4j.properties', 'r')
@@ -454,3 +456,8 @@ class InitTestCase(unittest.TestCase):
         file.close()
 
         self.assertRegexpMatches(contend, "/var/log/activemq/", "Problem when init the log4j")
+
+
+
+if __name__ == '__main__':
+    unittest.main()

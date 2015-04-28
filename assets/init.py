@@ -8,6 +8,7 @@ import re
 
 
 ACTIVEMQ_HOME = "/opt/activemq"
+ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf'
 
 
 
@@ -60,18 +61,18 @@ def do_setting_activemq_users(login, password):
     if password is None or password == "":
         raise Exception("You must set the password");
 
-    add_end_file(ACTIVEMQ_HOME + "/conf/users.properties", login + "=" + password);
+    add_end_file(ACTIVEMQ_CONF + "/users.properties", login + "=" + password);
 
 def do_remove_default_account():
     global ACTIVEMQ_HOME
 
 
-    replace_all(ACTIVEMQ_HOME + "/conf/users.properties","admin=admin", "")
-    replace_all(ACTIVEMQ_HOME + "/conf/jetty-realm.properties", "admin: admin, admin", "")
-    replace_all(ACTIVEMQ_HOME + "/conf/jetty-realm.properties", "user: user, user", "")
-    replace_all(ACTIVEMQ_HOME + "/conf/groups.properties", "admins=admin", "")
-    replace_all(ACTIVEMQ_HOME + "/conf/jmx.access", "admin readwrite", "")
-    replace_all(ACTIVEMQ_HOME + "/conf/jmx.password", "admin activemq", "")
+    replace_all(ACTIVEMQ_CONF + "/users.properties","admin=admin", "")
+    replace_all(ACTIVEMQ_CONF + "/jetty-realm.properties", "admin: admin, admin", "")
+    replace_all(ACTIVEMQ_CONF + "/jetty-realm.properties", "user: user, user", "")
+    replace_all(ACTIVEMQ_CONF + "/groups.properties", "admins=admin", "")
+    replace_all(ACTIVEMQ_CONF + "/jmx.access", "admin readwrite", "")
+    replace_all(ACTIVEMQ_CONF + "/jmx.password", "admin activemq", "")
 
 
 
@@ -83,9 +84,9 @@ def do_setting_activemq_groups(group, users):
         raise Exception("You must set the group");
 
     if users is None:
-        add_end_file(ACTIVEMQ_HOME + "/conf/groups.properties", group + "=");
+        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=");
     else:
-        add_end_file(ACTIVEMQ_HOME + "/conf/groups.properties", group + "=" + users);
+        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=" + users);
 
 
 def do_setting_activemq_web_access(role, user, password):
@@ -101,7 +102,7 @@ def do_setting_activemq_web_access(role, user, password):
         raise Exception("You must set the password");
 
 
-    add_end_file(ACTIVEMQ_HOME + "/conf/jetty-realm.properties", user + ": " + password + ", " +role);
+    add_end_file(ACTIVEMQ_CONF + "/jetty-realm.properties", user + ": " + password + ", " +role);
 
 
 def do_setting_activemq_jmx_access(role, user, password):
@@ -116,8 +117,8 @@ def do_setting_activemq_jmx_access(role, user, password):
     if password is None or password == "":
         raise Exception("You must set password")
 
-    add_end_file(ACTIVEMQ_HOME + "/conf/jmx.access", user + " " + role)
-    add_end_file(ACTIVEMQ_HOME + "/conf/jmx.password", user + " " + password)
+    add_end_file(ACTIVEMQ_CONF + "/jmx.access", user + " " + role)
+    add_end_file(ACTIVEMQ_CONF + "/jmx.password", user + " " + password)
 
 
 def do_setting_activemq_log4j(loglevel):
@@ -126,8 +127,8 @@ def do_setting_activemq_log4j(loglevel):
     if loglevel is None or loglevel == "":
         raise Exception("You must set loglevel")
 
-    replace_all(ACTIVEMQ_HOME + "/conf/log4j.properties", "log4j\.rootLogger=[^,]+", "log4j.rootLogger=" + loglevel)
-    replace_all(ACTIVEMQ_HOME + "/conf/log4j.properties", "log4j\.logger\.org\.apache\.activemq\.audit=[^,]+", "log4j.logger.org.apache.activemq.audit=" + loglevel)
+    replace_all(ACTIVEMQ_CONF + "/log4j.properties", "log4j\.rootLogger=[^,]+", "log4j.rootLogger=" + loglevel)
+    replace_all(ACTIVEMQ_CONF + "/log4j.properties", "log4j\.logger\.org\.apache\.activemq\.audit=[^,]+", "log4j.logger.org.apache.activemq.audit=" + loglevel)
 
 
 def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxConnection, frameSize, topics, queues):
@@ -150,12 +151,12 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
     if frameSize is None or frameSize < 0:
         raise Exception("You must set the frameSize")
 
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", 'brokerName="[^"]*"', 'brokerName="' + name + '"')
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '<constantPendingMessageLimitStrategy limit="\d+"/>', '<constantPendingMessageLimitStrategy limit="' + str(messageLimit) + '"/>')
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '<storeUsage limit="[^"]+"/>', '<storeUsage limit="' + storageUsage + '"/>')
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '<tempUsage limit="[^"]+"/>', '<tempUsage limit="' + tempUsage + '"/>')
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '\?maximumConnections=1000', "?maximumConnections=" + str(maxConnection))
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", 'wireFormat\.maxFrameSize=104857600', "wireFormat.maxFrameSize=" + str(frameSize))
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", 'brokerName="[^"]*"', 'brokerName="' + name + '"')
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '<constantPendingMessageLimitStrategy limit="\d+"/>', '<constantPendingMessageLimitStrategy limit="' + str(messageLimit) + '"/>')
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '<storeUsage limit="[^"]+"/>', '<storeUsage limit="' + storageUsage + '"/>')
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '<tempUsage limit="[^"]+"/>', '<tempUsage limit="' + tempUsage + '"/>')
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '\?maximumConnections=1000', "?maximumConnections=" + str(maxConnection))
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", 'wireFormat\.maxFrameSize=104857600', "wireFormat.maxFrameSize=" + str(frameSize))
 
 
     # We inject the setting to manage right on topic and queue
@@ -179,7 +180,7 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
         		            </map>
       		             </authorizationPlugin>
 	                     </plugins>\n"""
-    replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '</broker>', rightManagement + '</broker>')
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '</broker>', rightManagement + '</broker>')
 
 
 
@@ -197,7 +198,7 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
 
         staticRoute += "</destinations>\n"
 
-        replace_all(ACTIVEMQ_HOME + "/conf/activemq.xml", '</broker>', staticRoute + '</broker>')
+        replace_all(ACTIVEMQ_CONF + "/activemq.xml", '</broker>', staticRoute + '</broker>')
 
 def do_setting_activemq_wrapper(minMemoryInMB, maxMemoryInMb):
 
@@ -218,9 +219,12 @@ def do_init_activemq():
 
     # We change some macro on wrapper.conf to move data
     replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
+    
+    # Fix bug #4 "Cannot mount a custom activemq.xml"
+    replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf", "set.default.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%/conf.tmp")
 
     # We replace the log output
-    replace_all(ACTIVEMQ_HOME + "/conf/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
+    replace_all(ACTIVEMQ_CONF + "/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
     replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"wrapper\.logfile=%ACTIVEMQ_DATA%\/wrapper\.log", "wrapper.logfile=/var/log/activemq/wrapper.log")
 
 
@@ -340,6 +344,10 @@ def setting_all():
 
 # We start the daemon
 if(len(sys.argv) > 1 and sys.argv[1] == "start"):
+
+
+    # We move all config file on temporary folder (Fix bug # 4)
+    shutil.copytree(ACTIVEMQ_HOME + "/conf/", ACTIVEMQ_CONF); 
 
     # First we fix right on volume
     os.system("chown -R activemq:activemq /data/activemq")
