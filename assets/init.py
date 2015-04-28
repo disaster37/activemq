@@ -8,7 +8,7 @@ import re
 
 
 ACTIVEMQ_HOME = "/opt/activemq"
-ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf'
+ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf.tmp'
 
 
 
@@ -221,7 +221,7 @@ def do_init_activemq():
     replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
     
     # Fix bug #4 "Cannot mount a custom activemq.xml"
-    replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf", "set.default.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%/conf.tmp")
+    replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp")
 
     # We replace the log output
     replace_all(ACTIVEMQ_CONF + "/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
@@ -351,7 +351,7 @@ if(len(sys.argv) > 1 and sys.argv[1] == "start"):
 
     # First we fix right on volume
     os.system("chown -R activemq:activemq /data/activemq")
-    os.system("chown -R activemq:activemq " + ACTIVEMQ_HOME + "/conf")
+    os.system("chown -R activemq:activemq " + ACTIVEMQ_CONF)
     os.system("chown -R activemq:activemq /var/log/activemq")
 
     # Then we generate on the flow the right setting
