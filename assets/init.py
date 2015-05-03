@@ -8,7 +8,7 @@ import re
 
 
 ACTIVEMQ_HOME = "/opt/activemq"
-ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf'
+ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf.tmp'
 
 
 
@@ -33,7 +33,6 @@ def replace_all(file, searchRegex, replaceExp):
 
   for line in out:
       if regex.search(line) is not None:
-        print(searchRegex + "found \n")
         line = regex.sub(replaceExp, line)
 
       f.write(line)
@@ -57,11 +56,11 @@ def do_setting_activemq_users(login, password):
     global ACTIVEMQ_HOME
 
     if login is None or login == "" :
-        raise Exception("You must set the login");
+        raise Exception("You must set the login")
     if password is None or password == "":
-        raise Exception("You must set the password");
+        raise Exception("You must set the password")
 
-    add_end_file(ACTIVEMQ_CONF + "/users.properties", login + "=" + password);
+    add_end_file(ACTIVEMQ_CONF + "/users.properties", login + "=" + password)
 
 def do_remove_default_account():
     global ACTIVEMQ_HOME
@@ -73,7 +72,23 @@ def do_remove_default_account():
     replace_all(ACTIVEMQ_CONF + "/groups.properties", "admins=admin", "")
     replace_all(ACTIVEMQ_CONF + "/jmx.access", "admin readwrite", "")
     replace_all(ACTIVEMQ_CONF + "/jmx.password", "admin activemq", "")
+    replace_all(ACTIVEMQ_CONF + "/credentials.properties", "activemq\.username=system", "")
+    replace_all(ACTIVEMQ_CONF + "/credentials.properties", "activemq\.password=manager", "")
+    replace_all(ACTIVEMQ_CONF + "/credentials.properties", "guest\.password=password", "")
 
+
+
+def do_setting_activemq_credential(user, password):
+    global ACTIVEMQ_HOME
+
+    if user is None or user == "" :
+	raise Exception("You must set the user")
+
+    if password is None or password == "" :
+	raise Exception("You must set the password")
+
+    add_end_file(ACTIVEMQ_CONF + "/credentials.properties", "activemq.username=" + user)
+    add_end_file(ACTIVEMQ_CONF + "/credentials.properties", "activemq.password=" + password)
 
 
 
@@ -81,25 +96,25 @@ def do_setting_activemq_groups(group, users):
     global ACTIVEMQ_HOME
 
     if group is None or group == "" :
-        raise Exception("You must set the group");
+        raise Exception("You must set the group")
 
     if users is None:
-        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=");
+        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=")
     else:
-        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=" + users);
+        add_end_file(ACTIVEMQ_CONF + "/groups.properties", group + "=" + users)
 
 
 def do_setting_activemq_web_access(role, user, password):
     global ACTIVEMQ_HOME
 
     if role is None or role == "":
-        raise Exception("You must set the role");
+        raise Exception("You must set the role")
 
     if user is None or user == "":
-        raise Exception("You must set the username");
+        raise Exception("You must set the username")
 
     if password is None or password == "":
-        raise Exception("You must set the password");
+        raise Exception("You must set the password")
 
 
     add_end_file(ACTIVEMQ_CONF + "/jetty-realm.properties", user + ": " + password + ", " +role);
@@ -162,7 +177,7 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
     # We inject the setting to manage right on topic and queue
     rightManagement = """<plugins>
       		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-      		             <jaasAuthenticationPlugin configuration="activemq-domain" />
+      		             <jaasAuthenticationPlugin configuration="activemq" />
 		                 <authorizationPlugin>
         		            <map>
           			            <authorizationMap>
@@ -221,7 +236,7 @@ def do_init_activemq():
     replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
     
     # Fix bug #4 "Cannot mount a custom activemq.xml"
-    replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf", "set.default.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%/conf.tmp")
+    replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp")
 
     # We replace the log output
     replace_all(ACTIVEMQ_CONF + "/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
@@ -243,6 +258,7 @@ def setting_all():
         do_setting_activemq_users(os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
         do_setting_activemq_web_access("admin", os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
         do_setting_activemq_groups("admins", os.getenv('ACTIVEMQ_ADMIN_LOGIN'))
+	do_setting_activemq_credential(os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
 
     # We keep the default admin user
     #else:
@@ -351,7 +367,7 @@ if(len(sys.argv) > 1 and sys.argv[1] == "start"):
 
     # First we fix right on volume
     os.system("chown -R activemq:activemq /data/activemq")
-    os.system("chown -R activemq:activemq " + ACTIVEMQ_HOME + "/conf")
+    os.system("chown -R activemq:activemq " + ACTIVEMQ_CONF)
     os.system("chown -R activemq:activemq /var/log/activemq")
 
     # Then we generate on the flow the right setting

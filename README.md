@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.10.0**
+Current Version: **5.11.1**
 
 # Hardware Requirements
 
@@ -44,10 +44,10 @@ Current Version: **5.10.0**
 You can set the memory that you need :
 
 ```bash
-docker run ... \
+docker run --name='activemq' -it --rm \
 	-e 'ACTIVEMQ_MIN_MEMORY=512' \
-	-e 'ACTIVEMQ_MAX_MEMORY=2048'
-
+	-e 'ACTIVEMQ_MAX_MEMORY=2048'\
+	webcenter/activemq:latest
 ```
 This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ can take 2048 MB of max memory
 
@@ -97,7 +97,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.10.0
+docker pull webcenter/activemq:5.11.1
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -130,13 +130,18 @@ The account admin is "admin" and password is "admin". All settings is the defaul
 
 ```bash
 docker run --name='activemq' -d \
--e 'ACTIVEMQ_ADMIN_PASSWORD=password' -e 'ACTIVEMQ_USER_LOGIN=login' -e 'ACTIVEMQ_USER_PASSWORD=password' \
--e 'ACTIVEMQ_WRITE_LOGIN=producer_login' -e 'ACTIVEMQ_WRITE_PASSWORD=producer_password' -e 'ACTIVEMQ_READ_LOGIN=consumer_login' -e 'ACTIVEMQ_READ_PASSWORD=consumer_password' \
+-e 'ACTIVEMQ_NAME=amqp-srv1' \
+-e 'ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT=true' \
+-e 'ACTIVEMQ_ADMIN_LOGIN=admin' -e 'ACTIVEMQ_ADMIN_PASSWORD=your_password' \
+-e 'ACTIVEMQ_WRITE_LOGIN=producer_login' -e 'ACTIVEMQ_WRITE_PASSWORD=producer_password' 
+-e 'ACTIVEMQ_READ_LOGIN=consumer_login' -e 'ACTIVEMQ_READ_PASSWORD=consumer_password' \
 -e 'ACTIVEMQ_JMX_LOGIN=jmx_login' -e 'ACTIVEMQ_JMX_PASSWORD=jmx_password' \
--e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' -e 'ACTIVEMQ_STATIC_QUEUES=queue1;queue2;queue3' \
+-e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' 
+-e 'ACTIVEMQ_STATIC_QUEUES=queue1;queue2;queue3' \
+-e 'ACTIVEMQ_MIN_MEMORY=1024' -e  'ACTIVEMQ_MAX_MEMORY=4096' \
 -v /data/activemq:/data/activemq \
 -v /var/log/activemq:/var/log/activemq \
-webcenter/activemq:5.10.0
+webcenter/activemq:5.11.1
 ```
 
 
@@ -187,6 +192,7 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_MIN_MEMORY**: The init memory in MB that ActiveMQ take when start (it's like XMS). Default to `128` (128 MB)
 - **ACTIVEMQ_MAX_MEMORY**: The max memory in MB that ActiveMQ can take (it's like XMX). Default to `1024` (1024 MB)
 
+- **ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT**: It's permit to remove all default login on ActiveMQ (Webconsole, broker and JMX). Default to `false`
 - **ACTIVEMQ_ADMIN_LOGIN**: The login for admin account (broker and web console). Default to `admin` 
 - **ACTIVEMQ_ADMIN_PASSWORD**: The password for admin account. Default to `admin`
 - **ACTIVEMQ_USER_LOGIN**: The login to access on web console with user role (no right on broker). Default to `user`
@@ -208,6 +214,8 @@ Below is the complete list of available options that can be used to customize yo
 
 For advance configuration, the best way is to read ActiveMQ documentation and created your own setting file like activemq.xml.
 Next, you can mount it when you run this image or you can create your own image (base on this image) and include your specifics config file.
+
+The home of ActiveMQ is in /opt/activemq, so if you want to override all the setting, you can launch docker with ` -v /your_path/conf:/opt/activemq/conf`
 
 
 

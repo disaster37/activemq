@@ -31,8 +31,21 @@ class InitTestCase(unittest.TestCase):
         init.do_setting_activemq_users("user", "password")
 
         file = open(init.ACTIVEMQ_HOME +'/conf/users.properties', 'r')
-        self.assertRegexpMatches(file.read(), "\s+user=password\s+", "Problem when add user on users.properties");
+        self.assertRegexpMatches(file.read(), "\s+user=password\s+", "Problem when add user on users.properties")
         file.close()
+
+    def test_do_setting_activemq_credential(self):
+	""" Check the function do_setting_activemq_credential """
+	init.do_setting_activemq_credential("user", "password")
+
+
+	file = open(init.ACTIVEMQ_HOME +'/conf/credentials.properties', 'r')
+	contend = file.read()
+        file.close()
+
+	self.assertRegexpMatches(contend, "activemq\.username=user", "Problem when add user on credentials.properties")
+	self.assertRegexpMatches(contend, "activemq\.password=password", "Problem when add user on credentials.properties")
+
 
 
     def test_do_setting_activemq_groups(self):
@@ -106,7 +119,7 @@ class InitTestCase(unittest.TestCase):
 
         rightManagement = """<plugins>
       		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-      		             <jaasAuthenticationPlugin configuration="activemq-domain" />
+      		             <jaasAuthenticationPlugin configuration="activemq" />
 		                 <authorizationPlugin>
         		            <map>
           			            <authorizationMap>
@@ -167,6 +180,16 @@ class InitTestCase(unittest.TestCase):
         self.assertNotRegexpMatches(contend, "admin activemq", "Problem when remove the default value on jmx.password")
 
 
+	file = open(init.ACTIVEMQ_HOME +'/conf/credentials.properties', 'r')
+        contend = file.read()
+        file.close()
+
+        self.assertNotRegexpMatches(contend, "activemq\.username=system", "Problem when remove default user on credentials.properties")
+        self.assertNotRegexpMatches(contend, "activemq\.password=manager", "Problem when remove default user on credentials.properties")
+	self.assertNotRegexpMatches(contend, "guest\.password=password", "Problem when remove default user on credentials.properties")
+
+
+
     def test_do_init_activemq(self):
         """
         Test the function do_init_activemq
@@ -190,7 +213,7 @@ class InitTestCase(unittest.TestCase):
 
         self.assertRegexpMatches(contend, "set.default.ACTIVEMQ_DATA=/data/activemq", "Problem when init the wrapper.conf")
         self.assertRegexpMatches(contend, "wrapper.logfile=/var/log/activemq/wrapper.log", "Problem when init the wrapper.conf")
-	self.assertRegexpMatches(contend, "set.default.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%/conf.tmp", "Problem when init the wrapper.conf")
+	self.assertRegexpMatches(contend, "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp", "Problem when init the wrapper.conf")
 
         # We check the value on log4j
         file = open(init.ACTIVEMQ_HOME +'/conf/log4j.properties', 'r')
@@ -270,7 +293,7 @@ class InitTestCase(unittest.TestCase):
 
         rightManagement = """<plugins>
       		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-      		             <jaasAuthenticationPlugin configuration="activemq-domain" />
+      		             <jaasAuthenticationPlugin configuration="activemq" />
 		                 <authorizationPlugin>
         		            <map>
           			            <authorizationMap>
@@ -412,7 +435,7 @@ class InitTestCase(unittest.TestCase):
 
         rightManagement = """<plugins>
       		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-      		             <jaasAuthenticationPlugin configuration="activemq-domain" />
+      		             <jaasAuthenticationPlugin configuration="activemq" />
 		                 <authorizationPlugin>
         		            <map>
           			            <authorizationMap>
