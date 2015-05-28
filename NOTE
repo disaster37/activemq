@@ -17,4 +17,5 @@ docker run --name='activemq' --rm -i -t -v /var/log/activemq:/var/log/activemq -
 -e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' \
 -e 'ACTIVEMQ_STATIC_QUEUES=queue1;queue2;queue3' \
 -e 'ACTIVEMQ_MIN_MEMORY=64' -e  'ACTIVEMQ_MAX_MEMORY=128' \
+-e 'ACTIVEMQ_ENABLED_SCHEDULER=true' \
 webcenter/activemq:test

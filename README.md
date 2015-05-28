@@ -139,6 +139,7 @@ docker run --name='activemq' -d \
 -e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' 
 -e 'ACTIVEMQ_STATIC_QUEUES=queue1;queue2;queue3' \
 -e 'ACTIVEMQ_MIN_MEMORY=1024' -e  'ACTIVEMQ_MAX_MEMORY=4096' \
+-e 'ACTIVEMQ_ENABLED_SCHEDULER=true' \
 -v /data/activemq:/data/activemq \
 -v /var/log/activemq:/var/log/activemq \
 webcenter/activemq:5.11.1
@@ -189,6 +190,7 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_TEMP_USAGE**: The maximum amount of space temp the broker will use before disabling caching and/or slowing down producers. Default to `50 gb`
 - **ACTIVEMQ_MAX_CONNECTION**: It's DOS protection. It limit concurrent connections. Default to `1000`
 - **ACTIVEMQ_FRAME_SIZE**: It's DOS protection. It limit the frame size. Default to `104857600` (100MB)
+- **ACTIVEMQ_ENABLED_SCHEDULER**: Permit to enabled scheduler in ActiveMQ
 - **ACTIVEMQ_MIN_MEMORY**: The init memory in MB that ActiveMQ take when start (it's like XMS). Default to `128` (128 MB)
 - **ACTIVEMQ_MAX_MEMORY**: The max memory in MB that ActiveMQ can take (it's like XMX). Default to `1024` (1024 MB)
 

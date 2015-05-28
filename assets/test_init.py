@@ -103,7 +103,7 @@ class InitTestCase(unittest.TestCase):
     def test_do_setting_activemq_main(self):
         """Check the function do_setting_activemq_main"""
 
-        init.do_setting_activemq_main("myServer", 500, "5 gb", "1 gb", 30, 1000, "topic1;topic2;topic3", "queue1;queue2;queue3")
+        init.do_setting_activemq_main("myServer", 500, "5 gb", "1 gb", 30, 1000, "topic1;topic2;topic3", "queue1;queue2;queue3", "true")
 
         file = open(init.ACTIVEMQ_HOME +'/conf/activemq.xml', 'r')
         contend = file.read()
@@ -115,6 +115,7 @@ class InitTestCase(unittest.TestCase):
         self.assertRegexpMatches(contend, "<tempUsage limit=\"1 gb\"/>", "Problem when set the temp usage")
         self.assertRegexpMatches(contend, "<transportConnector .*\?maximumConnections=30.*/>", "Problem when set the max connection on broker")
         self.assertRegexpMatches(contend, "<transportConnector .*wireFormat.maxFrameSize=1000.*/>", "Problem when set the max frame size")
+        self.assertRegexpMatches(contend, "<broker schedulerSupport=\"true\"", "Problem when enabled scheduler")
         self.assertRegexpMatches(contend, "<destinations>\s*<topic physicalName=\"topic1\"\s*/>\s*<topic physicalName=\"topic2\"\s*/>\s*<topic physicalName=\"topic3\"\s*/>\s*<queue physicalName=\"queue1\"\s*/>\s*<queue physicalName=\"queue2\"\s*/>\s*<queue physicalName=\"queue3\"\s*/>\s*</destinations>", "Problem with static topic and queue")
 
         rightManagement = """<plugins>
@@ -289,6 +290,7 @@ class InitTestCase(unittest.TestCase):
         self.assertRegexpMatches(contend, "<tempUsage limit=\"50 gb\"/>", "Problem with the default value on activemq.xml")
         self.assertRegexpMatches(contend, "<transportConnector .*\?maximumConnections=1000.*/>", "Problem with the default value on activemq.xml")
         self.assertRegexpMatches(contend, "<transportConnector .*wireFormat.maxFrameSize=104857600.*/>", "Problem with the default value on activemq.xml")
+        self.assertNotRegexpMatches(contend, "<broker schedulerSupport=\"true\"", "Problem with the default value on activemq.xml")
         self.assertNotRegexpMatches(contend, "<destinations>.*</destinations>", "Problem with the default value on activemq.xml")
 
         rightManagement = """<plugins>
@@ -360,9 +362,10 @@ class InitTestCase(unittest.TestCase):
         os.environ["ACTIVEMQ_OWNER_PASSWORD"] = "owner1234"
         os.environ["ACTIVEMQ_JMX_LOGIN"] = "jmx"
         os.environ["ACTIVEMQ_JMX_PASSWORD"] = "jmx1234"
-        os.environ["ACTIVEMQ_STATIC_TOPICS"] = "topic1,topic2"
-        os.environ["ACTIVEMQ_STATIC_QUEUES"] = "queue1,queue2,queue3"
+        os.environ["ACTIVEMQ_STATIC_TOPICS"] = "topic1;topic2"
+        os.environ["ACTIVEMQ_STATIC_QUEUES"] = "queue1;queue2;queue3"
         os.environ["ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT"] = "true"
+	os.environ["ACTIVEMQ_ENABLED_SCHEDULER"] = "true"
 
 
 
@@ -431,7 +434,8 @@ class InitTestCase(unittest.TestCase):
         self.assertRegexpMatches(contend, "<tempUsage limit=\"5 gb\"/>", "Problem with set the value on activemq.xml")
         self.assertRegexpMatches(contend, "<transportConnector .*\?maximumConnections=10.*/>", "Problem with set the value on activemq.xml")
         self.assertRegexpMatches(contend, "<transportConnector .*wireFormat.maxFrameSize=2000000.*/>", "Problem with set the value on activemq.xml")
-        self.assertNotRegexpMatches(contend, "<destinations>\s*<topic physicalName=\"topic1\"\s*/>\s*<topic physicalName=\"topic2\"\s*/>\s*<queue physicalName=\"queue1\"\s*/>\s*<queue physicalName=\"queue2\"\s*/>\s*<queue physicalName=\"queue3\"\s*/>\s*</destinations>", "Problem with set the value on activemq.xml")
+	self.assertRegexpMatches(contend, "<broker schedulerSupport=\"true\"", "Problem with set the value on activemq.xml")
+        self.assertRegexpMatches(contend, "<destinations>\s*<topic physicalName=\"topic1\"\s*/>\s*<topic physicalName=\"topic2\"\s*/>\s*<queue physicalName=\"queue1\"\s*/>\s*<queue physicalName=\"queue2\"\s*/>\s*<queue physicalName=\"queue3\"\s*/>\s*</destinations>", "Problem with set the value on activemq.xml")
 
         rightManagement = """<plugins>
       		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->

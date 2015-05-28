@@ -146,7 +146,7 @@ def do_setting_activemq_log4j(loglevel):
     replace_all(ACTIVEMQ_CONF + "/log4j.properties", "log4j\.logger\.org\.apache\.activemq\.audit=[^,]+", "log4j.logger.org.apache.activemq.audit=" + loglevel)
 
 
-def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxConnection, frameSize, topics, queues):
+def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxConnection, frameSize, topics, queues, enabledScheduler):
 
     if name is None or name == "":
         raise Exception("You must set the name")
@@ -173,6 +173,9 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
     replace_all(ACTIVEMQ_CONF + "/activemq.xml", '\?maximumConnections=1000', "?maximumConnections=" + str(maxConnection))
     replace_all(ACTIVEMQ_CONF + "/activemq.xml", 'wireFormat\.maxFrameSize=104857600', "wireFormat.maxFrameSize=" + str(frameSize))
 
+    # Look for enabled scheduler
+    if enabledScheduler is not None and enabledScheduler == "true" :
+    	replace_all(ACTIVEMQ_CONF + "/activemq.xml", '<broker', '<broker schedulerSupport="true"')
 
     # We inject the setting to manage right on topic and queue
     rightManagement = """<plugins>
@@ -340,7 +343,7 @@ def setting_all():
     else:
         frameSize = os.getenv('ACTIVEMQ_FRAME_SIZE')
 
-    do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxConnection, frameSize, os.getenv('ACTIVEMQ_STATIC_TOPICS'), os.getenv('ACTIVEMQ_STATIC_QUEUES'))
+    do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxConnection, frameSize, os.getenv('ACTIVEMQ_STATIC_TOPICS'), os.getenv('ACTIVEMQ_STATIC_QUEUES'), os.getenv('ACTIVEMQ_ENABLED_SCHEDULER'))
 
     # We setting wrapper
     if os.getenv('ACTIVEMQ_MIN_MEMORY') is None:

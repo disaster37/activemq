@@ -1,5 +1,8 @@
 # Changelog
 
+**v2.0.1
+  - Add feature to enabled sheduler with parameter (#8)
+
 **v2.0.0
   - Replace init bash script with python script. Integrate many unit test and patch on the flow the standard setting files
 
