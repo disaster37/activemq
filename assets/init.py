@@ -200,7 +200,8 @@ def do_setting_activemq_main(name, messageLimit, storageUsage, tempUsage, maxCon
 	                     </plugins>\n"""
     replace_all(ACTIVEMQ_CONF + "/activemq.xml", '</broker>', rightManagement + '</broker>')
 
-
+    # Enable message scheduler
+    replace_all(ACTIVEMQ_CONF + "/activemq.xml", '<broker', '<broker schedulerSupport="true"')
 
     if (topics is not None and topics != "") or (queues is not None and queues != ""):
         staticRoute = "<destinations>\n"
