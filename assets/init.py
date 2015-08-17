@@ -366,6 +366,7 @@ if(len(sys.argv) > 1 and sys.argv[1] == "start"):
 
 
     # We move all config file on temporary folder (Fix bug # 4)
+    shutil.rmtree(ACTIVEMQ_CONF, ignore_errors=True);
     shutil.copytree(ACTIVEMQ_HOME + "/conf/", ACTIVEMQ_CONF); 
 
     # First we fix right on volume
