@@ -1,5 +1,12 @@
 # Changelog
 
+**v3.0.0
+  - Upgrade to Ubuntu 15.10 and on last OpenJDK-jre
+  - Upgrade to Activemq 5.12.0
+
+**v2.0.2
+  - Fix bug when you use persistant container
+
 **v2.0.1
   - Add feature to enabled sheduler with parameter (#8)
 

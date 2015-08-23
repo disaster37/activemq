@@ -1,2 +1,2 @@
 activemq:
-  image: webcenter/activemq:5.11.1
+  image: webcenter/activemq:5.12.0

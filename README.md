@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.11.1**
+Current Version: **5.12.0**
 
 # Hardware Requirements
 
@@ -47,6 +47,7 @@ You can set the memory that you need :
 docker run --name='activemq' -it --rm \
 	-e 'ACTIVEMQ_MIN_MEMORY=512' \
 	-e 'ACTIVEMQ_MAX_MEMORY=2048'\
+        -P
 	webcenter/activemq:latest
 ```
 This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ can take 2048 MB of max memory
@@ -97,7 +98,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.11.1
+docker pull webcenter/activemq:5.12.0
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -121,7 +122,7 @@ You can launch the image using the docker command line :
 - **For test purpose :**
 
 ```bash
-docker run --name='activemq' -it --rm \
+docker run --name='activemq' -it --rm -P \
 webcenter/activemq:latest
 ```
 The account admin is "admin" and password is "admin". All settings is the default ActiveMQ's settings.
@@ -142,7 +143,10 @@ docker run --name='activemq' -d \
 -e 'ACTIVEMQ_ENABLED_SCHEDULER=true' \
 -v /data/activemq:/data/activemq \
 -v /var/log/activemq:/var/log/activemq \
-webcenter/activemq:5.11.1
+-p 8161:8161 \
+-p 61616:61616 \
+-p 61613:61613 \
+webcenter/activemq:5.12.0
 ```
 
 
