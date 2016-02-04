@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.12.0**
+Current Version: **5.13.0**
 
 # Hardware Requirements
 
@@ -98,7 +98,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.12.0
+docker pull webcenter/activemq:5.13.0
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -134,10 +134,10 @@ docker run --name='activemq' -d \
 -e 'ACTIVEMQ_NAME=amqp-srv1' \
 -e 'ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT=true' \
 -e 'ACTIVEMQ_ADMIN_LOGIN=admin' -e 'ACTIVEMQ_ADMIN_PASSWORD=your_password' \
--e 'ACTIVEMQ_WRITE_LOGIN=producer_login' -e 'ACTIVEMQ_WRITE_PASSWORD=producer_password' 
+-e 'ACTIVEMQ_WRITE_LOGIN=producer_login' -e 'ACTIVEMQ_WRITE_PASSWORD=producer_password' \
 -e 'ACTIVEMQ_READ_LOGIN=consumer_login' -e 'ACTIVEMQ_READ_PASSWORD=consumer_password' \
 -e 'ACTIVEMQ_JMX_LOGIN=jmx_login' -e 'ACTIVEMQ_JMX_PASSWORD=jmx_password' \
--e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' 
+-e 'ACTIVEMQ_STATIC_TOPICS=topic1;topic2;topic3' \
 -e 'ACTIVEMQ_STATIC_QUEUES=queue1;queue2;queue3' \
 -e 'ACTIVEMQ_MIN_MEMORY=1024' -e  'ACTIVEMQ_MAX_MEMORY=4096' \
 -e 'ACTIVEMQ_ENABLED_SCHEDULER=true' \
@@ -146,7 +146,7 @@ docker run --name='activemq' -d \
 -p 8161:8161 \
 -p 61616:61616 \
 -p 61613:61613 \
-webcenter/activemq:5.12.0
+webcenter/activemq:5.13.0
 ```
 
 
