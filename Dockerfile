@@ -1,4 +1,4 @@
-#ActiveMQ 5.13.0
+#ActiveMQ 5.13.1
 
 FROM webcenter/openjdk-jre:8
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
