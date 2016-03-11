@@ -1,5 +1,9 @@
 # Changelog
 
+**v3.0.2
+  - Upgrade to ActiveMQ 5.13.2
+  - Add parameter to disable auth
+
 **v3.0.0
   - Upgrade to Ubuntu 15.10 and on last OpenJDK-jre
   - Upgrade to Activemq 5.12.0
