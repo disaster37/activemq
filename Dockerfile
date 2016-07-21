@@ -27,6 +27,10 @@ COPY assets/run.sh /app/run.sh
 RUN chmod +x /app/init.py
 RUN chmod +x /app/run.sh
 
+# lock jmx files otherwise amq wont run
+RUN chmod 600 /opt/activemq/conf/jmx.access
+RUN chmod 600 /opt/activemq/conf/jmx.password
+
 # Expose all port
 EXPOSE 8161
 EXPOSE 61616
