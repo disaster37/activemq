@@ -2,7 +2,7 @@
 set -e
 
 
-ACTIVEMQ_VERSION="5.13.2"
+ACTIVEMQ_VERSION="5.13.3"
 ACTIVEMQ_HOME="/opt/activemq"
 SETUP_DIR="/app/setup"
 LOG_DIR="/var/log"
@@ -75,7 +75,7 @@ cat > /etc/supervisor/conf.d/activemq.conf <<EOF
 [program:activemq]
 priority=20
 directory=/tmp
-command=/opt/activemq/bin/linux-x86-64/activemq console
+command=/opt/activemq/bin/activemq console
 user=root
 autostart=true
 autorestart=true
