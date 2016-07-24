@@ -5,6 +5,7 @@ MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 # Update distro and install some packages
 RUN apt-get update && \
     apt-get upgrade -y && \
+    apt-get install -y python-software-properties software-properties-common && \
     apt-get install vim curl -y && \
     apt-get install supervisor -y && \
     apt-get install logrotate -y && \
