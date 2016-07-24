@@ -12,18 +12,18 @@ class InitTestCase(unittest.TestCase):
     #@classmethod
     def setUp(self):
         print("Settup unit test \n")
-        shutil.copytree("test/fixtures/", "test/tmp/conf/");
-        os.makedirs("test/tmp/bin/linux-x86-64")
-        shutil.copy2("test/fixtures/wrapper.conf", "test/tmp/bin/linux-x86-64/")
-        shutil.copy2("test/fixtures/activemq", "test/tmp/bin/linux-x86-64/")
-        init.ACTIVEMQ_HOME = "test/tmp";
-	init.ACTIVEMQ_CONF = init.ACTIVEMQ_HOME + '/conf'
+        shutil.copytree("/opt/activemq/", "test/tmp/");
+        #os.makedirs("test/tmp/bin/linux-x86-64")
+        #shutil.copy2("test/fixtures/wrapper.conf", "test/tmp/bin/linux-x86-64/")
+        #shutil.copy2("test/fixtures/activemq", "test/tmp/bin/linux-x86-64/")
+        init.ACTIVEMQ_HOME = "/opt/activemq";
+        init.ACTIVEMQ_CONF = init.ACTIVEMQ_HOME + '/conf'
 
 
     #@classmethod
     def tearDown(self):
         print("TearDown unit test \n")
-        shutil.rmtree("test/tmp")
+        #shutil.rmtree("test/tmp")
 
 
     def test_do_setting_activemq_users(self):

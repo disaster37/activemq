@@ -20,6 +20,9 @@ COPY assets/setup/ /app/setup/
 RUN chmod +x /app/setup/install
 RUN /app/setup/install
 
+# Copy test
+COPY test/* /app/test/
+
 
 # Copy the app setting
 COPY assets/init.py /app/init.py
@@ -42,5 +45,4 @@ VOLUME ["/opt/activemq/conf"]
 
 WORKDIR /opt/activemq
 
-#ENTRYPOINT ["/app/init"]
 CMD ["/app/run.sh"]
