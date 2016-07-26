@@ -1,11 +1,13 @@
 FROM webcenter/openjdk-jre:8
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
+#Proxy setting
+ENV http_proxy http://cs.supaddev:45X5.VcMaN.9pO1@SMS37CTI1:8080
+ENV https_proxy http://cs.supaddev:45X5.VcMaN.9pO1@SMS37CTI1:8080
 
 # Update distro and install some packages
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y python-software-properties software-properties-common && \
     apt-get install vim curl -y && \
     apt-get install supervisor -y && \
     apt-get install logrotate -y && \
@@ -21,14 +23,11 @@ COPY assets/setup/ /app/setup/
 RUN chmod +x /app/setup/install
 RUN /app/setup/install
 
-# Copy test
-COPY test/* /app/test/
 
 
 # Copy the app setting
-COPY assets/init.py /app/init.py
+COPY assets/entrypoint /app/entrypoint
 COPY assets/run.sh /app/run.sh
-RUN chmod +x /app/init.py
 RUN chmod +x /app/run.sh
 
 # Expose all port

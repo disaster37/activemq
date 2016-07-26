@@ -11,7 +11,7 @@ ACTIVEMQ_HOME = "/opt/activemq"
 ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf.tmp'
 
 
-class ServiceRun():
+class Init():
 
 
     def replace_all(self, file, searchRegex, replaceExp):
@@ -178,26 +178,27 @@ class ServiceRun():
 
         # We inject the setting to manage right on topic and queue if needed
         if enabledAuth == "true":
-            rightManagement = """<plugins>
-              		             <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
-              		             <jaasAuthenticationPlugin configuration="activemq" />
-        		                 <authorizationPlugin>
-                		            <map>
-                  			            <authorizationMap>
-                    				        <authorizationEntries>
-                      					        <authorizationEntry queue=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
-                      					        <authorizationEntry topic=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
-                      					        <authorizationEntry topic="ActiveMQ.Advisory.>" read="admins,reads,writes,owners" write="admins,reads,writes,owners" admin="admins,reads,writes,owners"/>
-                    				        </authorizationEntries>
+            rightManagement = """
+<plugins>
+    <!--  use JAAS to authenticate using the login.config file on the classpath to configure JAAS -->
+    <jaasAuthenticationPlugin configuration="activemq" />
+    <authorizationPlugin>
+        <map>
+            <authorizationMap>
+                <authorizationEntries>
+                    <authorizationEntry queue=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
+                    <authorizationEntry topic=">" read="admins,reads,writes,owners" write="admins,writes,owners" admin="admins,owners" />
+                    <authorizationEntry topic="ActiveMQ.Advisory.>" read="admins,reads,writes,owners" write="admins,reads,writes,owners" admin="admins,reads,writes,owners"/>
+                </authorizationEntries>
 
-                    				        <!-- let's assign roles to temporary destinations. comment this entry if we don't want any roles assigned to temp destinations  -->
-                    				        <tempDestinationAuthorizationEntry>
-                      					        <tempDestinationAuthorizationEntry read="tempDestinationAdmins" write="tempDestinationAdmins" admin="tempDestinationAdmins"/>
-                   				            </tempDestinationAuthorizationEntry>
-                  			            </authorizationMap>
-                		            </map>
-              		             </authorizationPlugin>
-        	                     </plugins>\n"""
+                <!-- let's assign roles to temporary destinations. comment this entry if we don't want any roles assigned to temp destinations  -->
+                <tempDestinationAuthorizationEntry>
+                    <tempDestinationAuthorizationEntry read="tempDestinationAdmins" write="tempDestinationAdmins" admin="tempDestinationAdmins"/>
+                </tempDestinationAuthorizationEntry>
+            </authorizationMap>
+        </map>
+    </authorizationPlugin>
+</plugins>\n"""
             self.replace_all(ACTIVEMQ_CONF + "/activemq.xml", '</broker>', rightManagement + '</broker>')
 
 
@@ -246,6 +247,75 @@ class ServiceRun():
         self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"wrapper\.logfile=%ACTIVEMQ_DATA%\/wrapper\.log", "wrapper.logfile=/var/log/activemq/wrapper.log")
 
 
+    def setting_all(self):
+        # We look if we must remove default account
+        if os.getenv('ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT') == "true":
+            self.do_remove_default_account()
+
+        # We init some fix parameter
+        self.do_init_activemq()
+
+        # We setting the admin account
+        if os.getenv('ACTIVEMQ_ADMIN_LOGIN') is not None and os.getenv('ACTIVEMQ_ADMIN_PASSWORD') is not None:
+            self.do_setting_activemq_users(os.getenv('ACTIVEMQ_ADMIN_LOGIN'),
+                                                 os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
+            self.do_setting_activemq_web_access("admin", os.getenv('ACTIVEMQ_ADMIN_LOGIN'),
+                                                      os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
+            self.do_setting_activemq_groups("admins", os.getenv('ACTIVEMQ_ADMIN_LOGIN'))
+            self.do_setting_activemq_credential(os.getenv('ACTIVEMQ_ADMIN_LOGIN'),
+                                                      os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
+
+        # We setting the user account
+        if os.getenv('ACTIVEMQ_USER_LOGIN') is not None and os.getenv('ACTIVEMQ_USER_PASSWORD') is not None:
+            self.do_setting_activemq_users(os.getenv('ACTIVEMQ_USER_LOGIN'), os.getenv('ACTIVEMQ_USER_PASSWORD'))
+            self.do_setting_activemq_web_access("user", os.getenv('ACTIVEMQ_USER_LOGIN'),
+                                                      os.getenv('ACTIVEMQ_USER_PASSWORD'))
+
+        # We setting the owner account
+        if os.getenv('ACTIVEMQ_OWNER_LOGIN') is not None and os.getenv('ACTIVEMQ_OWNER_PASSWORD') is not None:
+            self.do_setting_activemq_users(os.getenv('ACTIVEMQ_OWNER_LOGIN'),
+                                                 os.getenv('ACTIVEMQ_OWNER_PASSWORD'))
+            self.do_setting_activemq_groups("owners", os.getenv('ACTIVEMQ_OWNER_LOGIN'))
+
+        # We setting the writer account
+        if os.getenv('ACTIVEMQ_WRITE_LOGIN') is not None and os.getenv('ACTIVEMQ_WRITE_PASSWORD') is not None:
+            self.do_setting_activemq_users(os.getenv('ACTIVEMQ_WRITE_LOGIN'),
+                                                 os.getenv('ACTIVEMQ_WRITE_PASSWORD'))
+            self.do_setting_activemq_groups("writes", os.getenv('ACTIVEMQ_WRITE_LOGIN'))
+
+        # We setting the reader account
+        if os.getenv('ACTIVEMQ_READ_LOGIN') is not None and os.getenv('ACTIVEMQ_READ_PASSWORD') is not None:
+            self.do_setting_activemq_users(os.getenv('ACTIVEMQ_READ_LOGIN'), os.getenv('ACTIVEMQ_READ_PASSWORD'))
+            if os.getenv('ACTIVEMQ_USER_LOGIN') is not None and os.getenv('ACTIVEMQ_USER_PASSWORD') is not None:
+                self.do_setting_activemq_groups("reads", os.getenv('ACTIVEMQ_READ_LOGIN') + "," + os.getenv(
+                    'ACTIVEMQ_USER_LOGIN'))
+            else:
+                self.do_setting_activemq_groups("reads", os.getenv('ACTIVEMQ_READ_LOGIN'))
+
+        # We setting the JMX access
+        if os.getenv('ACTIVEMQ_JMX_LOGIN') is not None and os.getenv('ACTIVEMQ_JMX_PASSWORD') is not None:
+            self.do_setting_activemq_jmx_access("readwrite", os.getenv('ACTIVEMQ_JMX_LOGIN'),
+                                                      os.getenv('ACTIVEMQ_JMX_PASSWORD'))
+
+        # We setting the log level
+        if os.getenv('ACTIVEMQ_LOGLEVEL') is not None:
+            self.do_setting_activemq_log4j(os.getenv('ACTIVEMQ_LOGLEVEL'))
+
+        # We set the main parameters
+        self.do_setting_activemq_main(os.getenv('ACTIVEMQ_NAME', 'localhost'),
+                                            os.getenv('ACTIVEMQ_PENDING_MESSAGE_LIMIT', '1000'),
+                                            os.getenv('ACTIVEMQ_STORAGE_USAGE', '100 gb'),
+                                            os.getenv('ACTIVEMQ_TEMP_USAGE', '50 gb'),
+                                            os.getenv('ACTIVEMQ_MAX_CONNECTION', '1000'),
+                                            os.getenv('ACTIVEMQ_FRAME_SIZE', '104857600'),
+                                            os.getenv('ACTIVEMQ_STATIC_TOPICS'), os.getenv('ACTIVEMQ_STATIC_QUEUES'),
+                                            os.getenv('ACTIVEMQ_ENABLED_SCHEDULER', 'true'),
+                                            os.getenv('ACTIVEMQ_ENABLED_AUTH', 'true'))
+
+        # We setting wrapper
+        self.do_setting_activemq_wrapper(os.getenv('ACTIVEMQ_MIN_MEMORY', '128'),
+                                               os.getenv('ACTIVEMQ_MAX_MEMORY', '1024'))
+
 if __name__ == '__main__':
 
     # We move all config file on temporary folder (Fix bug # 4)
@@ -257,57 +327,5 @@ if __name__ == '__main__':
     os.system("chown -R activemq:activemq " + ACTIVEMQ_CONF)
     os.system("chown -R activemq:activemq /var/log/activemq")
 
-    serviceRun = ServiceRun()
-
-    # We look if we must remove default account
-    if os.getenv('ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT') == "true":
-        serviceRun.do_remove_default_account()
-
-    # We init some fix parameter
-    serviceRun.do_init_activemq()
-
-    # We setting the admin account
-    if os.getenv('ACTIVEMQ_ADMIN_LOGIN') is not None and os.getenv('ACTIVEMQ_ADMIN_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_users(os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
-        serviceRun.do_setting_activemq_web_access("admin", os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
-        serviceRun.do_setting_activemq_groups("admins", os.getenv('ACTIVEMQ_ADMIN_LOGIN'))
-        serviceRun.do_setting_activemq_credential(os.getenv('ACTIVEMQ_ADMIN_LOGIN'), os.getenv('ACTIVEMQ_ADMIN_PASSWORD'))
-
-
-    # We setting the user account
-    if os.getenv('ACTIVEMQ_USER_LOGIN') is not None and os.getenv('ACTIVEMQ_USER_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_users(os.getenv('ACTIVEMQ_USER_LOGIN'), os.getenv('ACTIVEMQ_USER_PASSWORD'))
-        serviceRun.do_setting_activemq_web_access("user", os.getenv('ACTIVEMQ_USER_LOGIN'), os.getenv('ACTIVEMQ_USER_PASSWORD'))
-
-
-    # We setting the owner account
-    if os.getenv('ACTIVEMQ_OWNER_LOGIN') is not None and os.getenv('ACTIVEMQ_OWNER_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_users(os.getenv('ACTIVEMQ_OWNER_LOGIN'), os.getenv('ACTIVEMQ_OWNER_PASSWORD'))
-        serviceRun.do_setting_activemq_groups("owners", os.getenv('ACTIVEMQ_OWNER_LOGIN'))
-
-    # We setting the writer account
-    if os.getenv('ACTIVEMQ_WRITE_LOGIN') is not None and os.getenv('ACTIVEMQ_WRITE_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_users(os.getenv('ACTIVEMQ_WRITE_LOGIN'), os.getenv('ACTIVEMQ_WRITE_PASSWORD'))
-        serviceRun.do_setting_activemq_groups("writes", os.getenv('ACTIVEMQ_WRITE_LOGIN'))
-
-    # We setting the reader account
-    if os.getenv('ACTIVEMQ_READ_LOGIN') is not None and os.getenv('ACTIVEMQ_READ_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_users(os.getenv('ACTIVEMQ_READ_LOGIN'), os.getenv('ACTIVEMQ_READ_PASSWORD'))
-        if os.getenv('ACTIVEMQ_USER_LOGIN') is not None and os.getenv('ACTIVEMQ_USER_PASSWORD') is not None:
-            serviceRun.do_setting_activemq_groups("reads", os.getenv('ACTIVEMQ_READ_LOGIN') + "," + os.getenv('ACTIVEMQ_USER_LOGIN'))
-        else :
-            serviceRun.do_setting_activemq_groups("reads", os.getenv('ACTIVEMQ_READ_LOGIN'))
-
-    # We setting the JMX access
-    if os.getenv('ACTIVEMQ_JMX_LOGIN') is not None and os.getenv('ACTIVEMQ_JMX_PASSWORD') is not None:
-        serviceRun.do_setting_activemq_jmx_access("readwrite", os.getenv('ACTIVEMQ_JMX_LOGIN'), os.getenv('ACTIVEMQ_JMX_PASSWORD'))
-
-    # We setting the log level
-    if os.getenv('ACTIVEMQ_LOGLEVEL') is not None:
-        serviceRun.do_setting_activemq_log4j(os.getenv('ACTIVEMQ_LOGLEVEL'))
-
-    # We set the main parameters
-    serviceRun.do_setting_activemq_main(os.getenv('ACTIVEMQ_NAME', 'localhost'), os.getenv('ACTIVEMQ_PENDING_MESSAGE_LIMIT', '1000'), os.getenv('ACTIVEMQ_STORAGE_USAGE', '100 gb'), os.getenv('ACTIVEMQ_TEMP_USAGE', '50 gb'), os.getenv('ACTIVEMQ_MAX_CONNECTION', '1000'), os.getenv('ACTIVEMQ_FRAME_SIZE', '104857600'), os.getenv('ACTIVEMQ_STATIC_TOPICS'), os.getenv('ACTIVEMQ_STATIC_QUEUES'), os.getenv('ACTIVEMQ_ENABLED_SCHEDULER', 'true'), os.getenv('ACTIVEMQ_ENABLED_AUTH', 'true'))
-
-    # We setting wrapper
-    serviceRun.do_setting_activemq_wrapper(os.getenv('ACTIVEMQ_MIN_MEMORY', '128'), os.getenv('ACTIVEMQ_MAX_MEMORY', '1024'))
+    serviceRun = Init()
+    serviceRun.setting_all()
