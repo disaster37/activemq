@@ -4,11 +4,7 @@ MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
 # Update distro and install some packages
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install vim curl -y && \
-    apt-get install supervisor -y && \
-    apt-get install logrotate -y && \
-    apt-get install locales -y && \
+    apt-get install --no-install-recommends -y python-testtools vim curl supervisor logrotate locales  && \
     update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
     locale-gen en_US.UTF-8 && \
     dpkg-reconfigure locales && \
@@ -20,11 +16,14 @@ COPY assets/setup/ /app/setup/
 RUN chmod +x /app/setup/install
 RUN /app/setup/install
 
+# Copy test
+COPY test/* /app/test/
 
 
 # Copy the app setting
-COPY assets/entrypoint /app/entrypoint
+COPY assets/init.py /app/init.py
 COPY assets/run.sh /app/run.sh
+RUN chmod +x /app/init.py
 RUN chmod +x /app/run.sh
 
 # Expose all port
