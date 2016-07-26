@@ -16,14 +16,12 @@ COPY assets/setup/ /app/setup/
 RUN chmod +x /app/setup/install
 RUN /app/setup/install
 
-# Copy test
-COPY test/* /app/test/
+
 
 
 # Copy the app setting
-COPY assets/init.py /app/init.py
+COPY assets/entrypoint /app/entrypoint
 COPY assets/run.sh /app/run.sh
-RUN chmod +x /app/init.py
 RUN chmod +x /app/run.sh
 
 # Expose all port
