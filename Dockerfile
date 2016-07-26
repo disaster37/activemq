@@ -1,9 +1,6 @@
 FROM webcenter/openjdk-jre:8
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
-#Proxy setting
-ENV http_proxy http://cs.supaddev:45X5.VcMaN.9pO1@SMS37CTI1:8080
-ENV https_proxy http://cs.supaddev:45X5.VcMaN.9pO1@SMS37CTI1:8080
 
 # Update distro and install some packages
 RUN apt-get update && \
