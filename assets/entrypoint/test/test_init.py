@@ -350,6 +350,7 @@ class InitTestCase(unittest.TestCase):
         os.environ["ACTIVEMQ_STATIC_QUEUES"] = "queue1;queue2;queue3"
         os.environ["ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT"] = "true"
         os.environ["ACTIVEMQ_ENABLED_SCHEDULER"] = "true"
+        os.environ["ACTIVEMQ_ENABLED_AUTH"] = "true"
 
         initRun.setting_all()
 
