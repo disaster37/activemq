@@ -139,7 +139,7 @@ class InitTestCase(unittest.TestCase):
     </authorizationPlugin>
 </plugins>\n"""
 
-        self.assertRegexpMatches(contend, re.escape(rightManagement), "Problem with inject right management")
+        self.assertNotRegexpMatches(contend, re.escape(rightManagement), "Problem with inject right management")
 
 
     def test_do_remove_default_account(self):
