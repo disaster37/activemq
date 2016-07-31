@@ -310,7 +310,7 @@ class Init():
                                             os.getenv('ACTIVEMQ_FRAME_SIZE', '104857600'),
                                             os.getenv('ACTIVEMQ_STATIC_TOPICS'), os.getenv('ACTIVEMQ_STATIC_QUEUES'),
                                             os.getenv('ACTIVEMQ_ENABLED_SCHEDULER', 'true'),
-                                            os.getenv('ACTIVEMQ_ENABLED_AUTH', 'true'))
+                                            os.getenv('ACTIVEMQ_ENABLED_AUTH', 'false'))
 
         # We setting wrapper
         self.do_setting_activemq_wrapper(os.getenv('ACTIVEMQ_MIN_MEMORY', '128'),
