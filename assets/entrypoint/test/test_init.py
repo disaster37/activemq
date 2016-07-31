@@ -139,7 +139,7 @@ class InitTestCase(unittest.TestCase):
     </authorizationPlugin>
 </plugins>\n"""
 
-        self.assertNotRegexpMatches(contend, re.escape(rightManagement), "Problem with inject right management")
+        self.assertRegexpMatches(contend, re.escape(rightManagement), "Problem with inject right management")
 
 
     def test_do_remove_default_account(self):
@@ -301,7 +301,7 @@ class InitTestCase(unittest.TestCase):
         </map>
     </authorizationPlugin>
 </plugins>\n"""
-        self.assertRegexpMatches(contend, re.escape(rightManagement), "Problem with the default value on activemq.xml")
+        self.assertNotRegexpMatches(contend, re.escape(rightManagement), "Problem with the default value on activemq.xml")
 
         # We check the value on init script
         file = open(Init.ACTIVEMQ_HOME +'/bin/linux-x86-64/activemq', 'r')
