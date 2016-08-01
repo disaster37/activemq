@@ -43,11 +43,11 @@ class ActiveMQDockerTestCase(unittest.TestCase):
         global global_message
 
         # Run ActiveMQ container
-        rt,output = run_cmd('docker ps | grep activemq')
+        rt,output = run_cmd('/usr/bin/docker ps | grep activemq')
         if rt == 0:
             print("Remove old ActiveMQ container")
-            run_cmd('docker stop activemq')
-            run_cmd('docker rm activemq')
+            run_cmd('/usr/bin/docker stop activemq')
+            run_cmd('/usr/bin/docker rm activemq')
 
         # Init global variables
         global_error = None
@@ -59,18 +59,18 @@ class ActiveMQDockerTestCase(unittest.TestCase):
 
 
         # Stop and remove ActiveMQ container
-        run_cmd('docker stop activemq')
-        run_cmd('docker rm activemq')
+        run_cmd('/usr/bin/docker stop activemq')
+        run_cmd('/usr/bin/docker rm activemq')
 
     def test_activemq_run(self):
 
         print("Start ActiveMQ")
-        rt,output = run_cmd('docker run -d --name activemq webcenter/activemq:develop')
+        rt,output = run_cmd('/usr/bin/docker run -d --name activemq webcenter/activemq:develop')
         if rt != 0:
             self.fail("Failed to start ActiveMQ container : %s" % output)
         time.sleep(60)
 
-        rt,output = run_cmd('docker ps | grep activemq')
+        rt,output = run_cmd('/usr/bin/docker ps | grep activemq')
         self.assertEqual(rt, 0, "ActiveMQ container not running")
 
 
@@ -80,7 +80,7 @@ class ActiveMQDockerTestCase(unittest.TestCase):
         global global_error
 
         print("Start ActiveMQ")
-        rt,output = run_cmd('docker run -d --name activemq webcenter/activemq:develop')
+        rt,output = run_cmd('/usr/bin/docker run -d --name activemq webcenter/activemq:develop')
         if rt != 0:
             self.fail("Failed to start ActiveMQ container : %s" % output)
         time.sleep(60)
@@ -113,7 +113,7 @@ class ActiveMQDockerTestCase(unittest.TestCase):
 
         print("Start ActiveMQ")
         docker = '''
-docker run --name='activemq' --rm -i -t -v /var/log/activemq:/var/log/activemq -p 8161:8161 \
+/usr/bin/docker run --name='activemq' --rm -i -t -v /var/log/activemq:/var/log/activemq -p 8161:8161 \
 -e 'ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT=true' \
 -e 'ACTIVEMQ_ADMIN_LOGIN=admin' -e 'ACTIVEMQ_ADMIN_PASSWORD=admin_password' \
 -e 'ACTIVEMQ_USER_LOGIN=test' -e 'ACTIVEMQ_USER_PASSWORD=test_password' \
