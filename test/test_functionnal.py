@@ -56,8 +56,7 @@ class ActiveMQDockerTestCase(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        # Close stomp connexion
-        self.conn.disconnect()
+
 
         # Stop and remove ActiveMQ container
         run_cmd('docker stop activemq')
