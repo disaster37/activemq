@@ -14,7 +14,7 @@ global_error = None
 
 
 def run_cmd(cmd):
-  p = Popen(cmd, stdout=PIPE)
+  p = Popen(cmd, stdout=PIPE, shell=True)
   output = p.communicate()[0]
   return (p.returncode, output)
 
