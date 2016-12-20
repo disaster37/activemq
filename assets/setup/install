@@ -75,7 +75,7 @@ cat > /etc/supervisor/conf.d/activemq.conf <<EOF
 [program:activemq]
 priority=20
 directory=/tmp
-command=/opt/activemq/bin/activemq console
+command=/opt/activemq/bin/linux-x86-64/activemq console
 user=root
 autostart=true
 autorestart=true
