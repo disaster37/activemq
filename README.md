@@ -55,7 +55,7 @@ This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ ca
 ## Storage
 
 The necessary hard drive space depends if you use persistant message or not and the type of appender. Normaly, no need space for ActiveMQ because the most data are contains directly on memory.
-I think it's depend how you use ActiveMQ ;)
+I think it depends on how you use ActiveMQ ;)
 
 # Contributing
 
@@ -185,7 +185,7 @@ todo
 
 *Please refer the docker run command options for the `--env-file` flag where you can specify all required environment variables in a single file. This will save you from writing a potentially long docker run command. Alternately you can use fig.*
 
-Below is the complete list of available options that can be used to customize your gitlab installation.
+Below is the complete list of available options that can be used to customize your activemq installation.
 
 - **ACTIVEMQ_NAME**: The hostname of ActiveMQ server. Default to `localhost`
 - **ACTIVEMQ_LOGLEVEL**: The log level. Default to `INFO`
