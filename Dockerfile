@@ -1,6 +1,8 @@
 FROM webcenter/openjdk-jre:8
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
+ENV ACTIVEMQ_CONFIG_DIR /opt/activemq/conf.tmp
+ENV ACTIVEMQ_DATA_DIR /data/activemq
 
 # Update distro and install some packages
 RUN apt-get update && \
@@ -20,7 +22,7 @@ RUN /app/setup/install
 
 
 # Copy the app setting
-COPY assets/entrypoint /app/entrypoint
+COPY assets/entrypoint /app/
 COPY assets/run.sh /app/run.sh
 RUN chmod +x /app/run.sh
 
