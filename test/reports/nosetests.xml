@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="3" errors="0" failures="1" skip="0"><testcase classname="test_functionnal.ActiveMQDockerTestCase" name="test_activemq_run" time="64.116"><system-out><![CDATA[Remove old ActiveMQ container
+Start ActiveMQ
+Remove old ActiveMQ container
+]]></system-out></testcase><testcase classname="test_functionnal.ActiveMQDockerTestCase" name="test_activemq_run_all_option" time="60.925"><failure type="exceptions.AssertionError" message="Connexion not work 'ActiveMQDockerTestCase' object has no attribute 'is_error'&#10;-------------------- &gt;&gt; begin captured stdout &lt;&lt; ---------------------&#10;Remove old ActiveMQ container&#10;Start ActiveMQ&#10;&#10;--------------------- &gt;&gt; end captured stdout &lt;&lt; ----------------------&#10;-------------------- &gt;&gt; begin captured logging &lt;&lt; --------------------&#10;stomp.py: INFO: Attempting connection to host 172.17.0.1, port 61613&#10;stomp.py: INFO: Established connection to host 172.17.0.1, port 61613&#10;stomp.py: INFO: Starting receiver loop&#10;stomp.py: DEBUG: Sending frame ['STOMP', '\n', 'accept-version:1.1\n', 'login:admin\n', 'passcode:admin_password\n', '\n', '\x00']&#10;stomp.py: DEBUG: Received frame: 'CONNECTED', headers={'session': 'ID:69b5641cf759-59747-1470083064656-3:1', 'heart-beat': '0,0', 'version': '1.1', 'server': 'ActiveMQ/5.13.3'}, body=''&#10;stomp.py: DEBUG: Sending frame ['SUBSCRIBE', '\n', 'ack:auto\n', 'destination:/queue/test\n', 'id:1\n', '\n', '\x00']&#10;--------------------- &gt;&gt; end captured logging &lt;&lt; ---------------------"><![CDATA[  File "/usr/lib/python2.7/unittest/case.py", line 329, in run
+    testMethod()
+  File "/app/test/test_functionnal.py", line 163, in test_activemq_run_all_option
+    self.fail("Connexion not work %s" % e)
+  File "/usr/lib/python2.7/unittest/case.py", line 410, in fail
+    raise self.failureException(msg)
+"Connexion not work 'ActiveMQDockerTestCase' object has no attribute 'is_error'\n-------------------- >> begin captured stdout << ---------------------\nRemove old ActiveMQ container\nStart ActiveMQ\n\n--------------------- >> end captured stdout << ----------------------\n-------------------- >> begin captured logging << --------------------\nstomp.py: INFO: Attempting connection to host 172.17.0.1, port 61613\nstomp.py: INFO: Established connection to host 172.17.0.1, port 61613\nstomp.py: INFO: Starting receiver loop\nstomp.py: DEBUG: Sending frame ['STOMP', '\\n', 'accept-version:1.1\\n', 'login:admin\\n', 'passcode:admin_password\\n', '\\n', '\\x00']\nstomp.py: DEBUG: Received frame: 'CONNECTED', headers={'session': 'ID:69b5641cf759-59747-1470083064656-3:1', 'heart-beat': '0,0', 'version': '1.1', 'server': 'ActiveMQ/5.13.3'}, body=''\nstomp.py: DEBUG: Sending frame ['SUBSCRIBE', '\\n', 'ack:auto\\n', 'destination:/queue/test\\n', 'id:1\\n', '\\n', '\\x00']\n--------------------- >> end captured logging << ---------------------"]]></failure><system-out><![CDATA[Remove old ActiveMQ container
+Start ActiveMQ
+]]></system-out></testcase><testcase classname="test_functionnal.ActiveMQDockerTestCase" name="test_activemq_run_default_option" time="72.618"><system-out><![CDATA[Remove old ActiveMQ container
+Start ActiveMQ
+received a message "test1"
+Remove old ActiveMQ container
+]]></system-out></testcase></testsuite>
