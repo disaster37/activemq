@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.13.2**
+Current Version: **5.14.3**
 
 # Hardware Requirements
 
@@ -55,7 +55,7 @@ This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ ca
 ## Storage
 
 The necessary hard drive space depends if you use persistant message or not and the type of appender. Normaly, no need space for ActiveMQ because the most data are contains directly on memory.
-I think it's depend how you use ActiveMQ ;)
+I think it depends on how you use ActiveMQ ;)
 
 # Contributing
 
@@ -98,7 +98,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.13.2
+docker pull webcenter/activemq:5.14.3
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -146,7 +146,7 @@ docker run --name='activemq' -d \
 -p 8161:8161 \
 -p 61616:61616 \
 -p 61613:61613 \
-webcenter/activemq:5.13.2
+webcenter/activemq:5.14.3
 ```
 
 
@@ -185,7 +185,7 @@ todo
 
 *Please refer the docker run command options for the `--env-file` flag where you can specify all required environment variables in a single file. This will save you from writing a potentially long docker run command. Alternately you can use fig.*
 
-Below is the complete list of available options that can be used to customize your gitlab installation.
+Below is the complete list of available options that can be used to customize your activemq installation.
 
 - **ACTIVEMQ_NAME**: The hostname of ActiveMQ server. Default to `localhost`
 - **ACTIVEMQ_LOGLEVEL**: The log level. Default to `INFO`
@@ -194,8 +194,8 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_TEMP_USAGE**: The maximum amount of space temp the broker will use before disabling caching and/or slowing down producers. Default to `50 gb`
 - **ACTIVEMQ_MAX_CONNECTION**: It's DOS protection. It limit concurrent connections. Default to `1000`
 - **ACTIVEMQ_FRAME_SIZE**: It's DOS protection. It limit the frame size. Default to `104857600` (100MB)
-- **ACTIVEMQ_ENABLED_SCHEDULER**: Permit to enabled scheduler in ActiveMQ. Dault to `true`
-- **ACTIVEMQ_ENABLED_AUTH**: Permit to enabled the authentification in queue and topic (no anonymous access). Default to `true`
+- **ACTIVEMQ_ENABLED_SCHEDULER**: Permit to enabled scheduler in ActiveMQ. Default to `true`
+- **ACTIVEMQ_ENABLED_AUTH**: Permit to enabled the authentification in queue and topic (no anonymous access). Default to `false`
 - **ACTIVEMQ_MIN_MEMORY**: The init memory in MB that ActiveMQ take when start (it's like XMS). Default to `128` (128 MB)
 - **ACTIVEMQ_MAX_MEMORY**: The max memory in MB that ActiveMQ can take (it's like XMX). Default to `1024` (1024 MB)
 
