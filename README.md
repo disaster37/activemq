@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.13.2**
+Current Version: **5.14.2**
 
 # Hardware Requirements
 
@@ -55,7 +55,7 @@ This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ ca
 ## Storage
 
 The necessary hard drive space depends if you use persistant message or not and the type of appender. Normaly, no need space for ActiveMQ because the most data are contains directly on memory.
-I think it's depend how you use ActiveMQ ;)
+I think it depends on how you use ActiveMQ ;)
 
 # Contributing
 
@@ -98,7 +98,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.13.2
+docker pull webcenter/activemq:5.14.2
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -146,7 +146,7 @@ docker run --name='activemq' -d \
 -p 8161:8161 \
 -p 61616:61616 \
 -p 61613:61613 \
-webcenter/activemq:5.13.2
+webcenter/activemq:5.14.2
 ```
 
 
@@ -185,7 +185,7 @@ todo
 
 *Please refer the docker run command options for the `--env-file` flag where you can specify all required environment variables in a single file. This will save you from writing a potentially long docker run command. Alternately you can use fig.*
 
-Below is the complete list of available options that can be used to customize your gitlab installation.
+Below is the complete list of available options that can be used to customize your activemq installation.
 
 - **ACTIVEMQ_NAME**: The hostname of ActiveMQ server. Default to `localhost`
 - **ACTIVEMQ_LOGLEVEL**: The log level. Default to `INFO`
