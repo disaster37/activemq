@@ -26,6 +26,10 @@ COPY assets/entrypoint /app/
 COPY assets/run.sh /app/run.sh
 RUN chmod +x /app/run.sh
 
+# Fiw right on JMX credentials to use it
+RUN chmod 600 /opt/activemq/conf/jmx.access
+RUN chmod 600 /opt/activemq/conf/jmx.password
+
 # Expose all port
 EXPOSE 8161
 EXPOSE 61616

@@ -29,46 +29,7 @@ chown -R activemq:activemq ${LOG_DIR}/activemq
 
 
 
-# We setup logrotate for activemq
-cat > /etc/logrotate.d/activemq <<EOF
-${LOG_DIR}/activemq/*.log {
-  su activemq activemq
-  daily
-  missingok
-  rotate 10
-  compress
-  copytruncate
-  dateext
-  dateformat -%Y-%m-%d
-}
-EOF
 
-# configure supervisord log rotation
-cat > /etc/logrotate.d/supervisord <<EOF
-${LOG_DIR}/supervisor/*.log {
-  daily
-  missingok
-  rotate 10
-  compress
-  copytruncate
-  dateext
-  dateformat -%Y-%m-%d
-}
-EOF
-
-
-# configure supervisord to start crond
-cat > /etc/supervisor/conf.d/cron.conf <<EOF
-[program:cron]
-priority=20
-directory=/tmp
-command=/usr/sbin/cron -f
-user=root
-autostart=true
-autorestart=true
-stdout_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
-stderr_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
-EOF
 
 # configure supervisord to start activeMQ
 cat > /etc/supervisor/conf.d/activemq.conf <<EOF
@@ -79,6 +40,6 @@ command=/opt/activemq/bin/activemq console
 user=root
 autostart=true
 autorestart=true
-stdout_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
-stderr_logfile=${LOG_DIR}/supervisor/%(program_name)s.log
+stdout_logfile=${LOG_DIR}/activemq/console.log
+stderr_logfile=${LOG_DIR}/activemq/console.log
 EOF
