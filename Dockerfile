@@ -26,6 +26,13 @@ COPY assets/entrypoint /app/
 COPY assets/run.sh /app/run.sh
 RUN chmod +x /app/run.sh
 
+# Copy custom logging
+COPY assets/log4j.properties /opt/activemq/conf/log4j.properties
+
+# lock jmx files otherwise amq wont run
+RUN chmod 600 /opt/activemq/conf/jmx.access
+RUN chmod 600 /opt/activemq/conf/jmx.password
+
 # Expose all port
 EXPOSE 8161
 EXPOSE 61616

@@ -1,5 +1,10 @@
 # Changelog
 
+**3.0.3
+  - Don't use cron or logrotate
+  - User custom log4j.properties
+   - Logging rotation should be handled outside of this image
+
 **v3.0.2
   - Upgrade to ActiveMQ 5.13.2
   - Add parameter to disable auth
