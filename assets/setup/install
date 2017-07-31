@@ -2,7 +2,7 @@
 set -e
 
 
-ACTIVEMQ_VERSION="5.14.3"
+ACTIVEMQ_VERSION="5.15.0"
 ACTIVEMQ_HOME="/opt/activemq"
 SETUP_DIR="/app/setup"
 LOG_DIR="/var/log"

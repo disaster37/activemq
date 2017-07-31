@@ -28,7 +28,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.14.3**
+Current Version: **5.15.0**
 
 # Hardware Requirements
 
@@ -98,7 +98,7 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.14.3
+docker pull webcenter/activemq:5.15.0
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
@@ -146,7 +146,7 @@ docker run --name='activemq' -d \
 -p 8161:8161 \
 -p 61616:61616 \
 -p 61613:61613 \
-webcenter/activemq:5.14.3
+webcenter/activemq:5.15.0
 ```
 
 
