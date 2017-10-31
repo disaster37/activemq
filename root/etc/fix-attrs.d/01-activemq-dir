@@ -1,0 +1,2 @@
+/data/ false activemq 0660 0770
+/opt/activemq/conf true activemq 0660 0770 

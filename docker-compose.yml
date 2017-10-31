@@ -1,0 +1,14 @@
+version: '2'
+services:
+  activemq:
+    tty: true
+    image: webcenter/activemq:latest
+    volumes:
+      - activemq-data:/data
+    ports:
+      - 8161:8161
+      - 61616:61616
+      - 61613:61613
+volumes:
+  activemq-data:
+    driver: local
