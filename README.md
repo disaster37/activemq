@@ -47,7 +47,7 @@ You can set the memory that you need :
 docker run --name='activemq' -it --rm \
 	-e 'ACTIVEMQ_MIN_MEMORY=512' \
 	-e 'ACTIVEMQ_MAX_MEMORY=2048'\
-        -P
+        -P \
 	webcenter/activemq:latest
 ```
 This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ can take 2048 MB of max memory
