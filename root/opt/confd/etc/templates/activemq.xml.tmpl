@@ -146,10 +146,10 @@
 {{- if or (ge (len (ls "/config/topics")) 1) (ge (len (ls "/config/queues")) 1)}}
         <destinations>
 {{- range $i, $key := ls "/config/topics"}}
-            <topic physicalName="{{getv (printf "/config/topics/%s" $key)}}"
+            <topic physicalName="{{getv (printf "/config/topics/%s" $key)}}" />
 {{- end}}
 {{- range $i, $key := ls "/config/queues"}}
-            <queue physicalName="{{getv (printf "/config/queues/%s" $key)}}"
+            <queue physicalName="{{getv (printf "/config/queues/%s" $key)}}" />
 {{- end}}
         </destinations>
 {{- end}}
