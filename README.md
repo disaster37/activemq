@@ -226,7 +226,10 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_GROUPS_X**: Where X is the group and list user separated by a comma is the value. 
 - **ACTIVEMQ_JMX_X_ROLE**: Where X is the username and role is the value.
 - **ACTIVEMQ_JMX_X_PASSWORD**: Where X is the username and password is the value.
-
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_PORT**: Enable remote jmx through this port.
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_SSL**: Set if jmx port should use ssl. Default is `false`.
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_RMIPORT**: Set a static rmi port for jmx, which is needed to be able to expose the port. Default is `1617`.
+- **ACTIVEMQ_CONFIG_RMI_HOSTNAME**: Set hostname to associate with remote stubs. Default is `localhost`.
 - **ACTIVEMQ_CONFIG_TOPICS_X**: Where X is the logical topics name (without special char) and real topic name is the value.
 - **ACTIVEMQ_CONFIG_QUEUES_X**: Where X is the logical queue name (without special char) and real queue name is the value.
 
