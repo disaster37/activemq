@@ -9,7 +9,7 @@ ENV CONFD_PREFIX_KEY="/activemq" \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     LANG="en_US.utf8" \
     APP_HOME="/opt/activemq" \
-    APP_VERSION="5.15.2" \
+    APP_VERSION="5.15.7" \
     SCHEDULER_VOLUME="/opt/scheduler" \
     USER=activemq \
     GROUP=activemq \
@@ -39,7 +39,7 @@ RUN curl -sL https://github.com/just-containers/s6-overlay/releases/download/v1.
 # Install ActiveMQ software
 RUN \
     mkdir -p ${APP_HOME} /data /var/log/activemq  && \
-    curl http://apache.mirrors.ovh.net/ftp.apache.org/dist/activemq/${APP_VERSION}/apache-activemq-${APP_VERSION}-bin.tar.gz -o /tmp/activemq.tar.gz &&\
+    curl http://archive.apache.org/dist/activemq/${APP_VERSION}/apache-activemq-${APP_VERSION}-bin.tar.gz -o /tmp/activemq.tar.gz &&\
     tar -xzf /tmp/activemq.tar.gz -C /tmp &&\
     mv /tmp/apache-activemq-${APP_VERSION}/* ${APP_HOME} &&\
     rm -rf /tmp/activemq.tar.gz &&\

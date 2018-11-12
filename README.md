@@ -50,7 +50,7 @@ docker run --name='activemq' -it --rm \
         -P
 	webcenter/activemq:latest
 ```
-This sample lauch ActiveMQ in docker with 512 MB of memory, and then ACtiveMQ can take 2048 MB of max memory
+This sample lauch ActiveMQ in docker with 512 MB of memory, and then ActiveMQ can take 2048 MB of max memory
 
 ## Storage
 
@@ -189,7 +189,7 @@ You can use the following variables to limit the disk usage:
 
 ## JMX
 You can control JMX access with the following variables:
-- `ACTIVEMQ_JMX_X_ROLE`: Where X is the username and the value is the role (read or readwrite)
+- `ACTIVEMQ_JMX_X_ROLE`: Where X is the username and the value is the role (readonly or readwrite)
 - `ACTIVEMQ_JMX_X_PASSWORD`: Where X is the username and the value is the password
 
 ## Avaible Configuration Parameters
@@ -226,9 +226,12 @@ Below is the complete list of available options that can be used to customize yo
 - **ACTIVEMQ_GROUPS_X**: Where X is the group and list user separated by a comma is the value. 
 - **ACTIVEMQ_JMX_X_ROLE**: Where X is the username and role is the value.
 - **ACTIVEMQ_JMX_X_PASSWORD**: Where X is the username and password is the value.
-
-- **ACTIVEMQ_CONFIG_TOPICS_X**: Where X is the logical topics name (wihtout special char) and real topic name is the value.
-- **ACTIVEMQ_CONFIG_QUEUES_X**: Where X is the logical queue name (wihtout special char) and real queue name is the value.
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_PORT**: Enable remote jmx through this port.
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_SSL**: Set if jmx port should use ssl. Default is `false`.
+- **ACTIVEMQ_CONFIG_JMX_REMOTE_RMIPORT**: Set a static rmi port for jmx, which is needed to be able to expose the port. Default is `1617`.
+- **ACTIVEMQ_CONFIG_RMI_HOSTNAME**: Set hostname to associate with remote stubs. Default is `localhost`.
+- **ACTIVEMQ_CONFIG_TOPICS_X**: Where X is the logical topics name (without special char) and real topic name is the value.
+- **ACTIVEMQ_CONFIG_QUEUES_X**: Where X is the logical queue name (without special char) and real queue name is the value.
 
 
 ## Advance configuration
