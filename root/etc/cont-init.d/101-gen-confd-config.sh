@@ -100,12 +100,12 @@ keys = [
 ]
 EOF
 
-cat << EOF > ${CONFD_HOME}/etc/conf.d/wrapper.conf.toml
+cat << EOF > ${CONFD_HOME}/etc/conf.d/env.toml
 [template]
 prefix = "${CONFD_PREFIX_KEY}"
-src = "wrapper.conf.tmpl"
-dest = "${APP_HOME}/bin/linux-x86-64/wrapper.conf"
-mode = "0744"
+src = "env.tmpl"
+dest = "${APP_HOME}/bin/env"
+mode = "0644"
 gid = $GID
 uid = $UID
 keys = [
