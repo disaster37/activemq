@@ -24,11 +24,15 @@
 
 # Introduction
 
-Dockerfile to build a ActiveMQ container image.
+Dockerfile to build a ActiveMQ container image, base on Alpine.
 
 ## Version
 
 Current Version: **5.15.2**
+
+## Breaking change
+
+If you upgrade from previous version than 5.15.2, you need to change all environment variable name because of we move from python script to confd.
 
 # Hardware Requirements
 

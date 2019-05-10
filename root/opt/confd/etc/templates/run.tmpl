@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv sh
+
+su ${USER} -c "ACTIVEMQ_OPTS_MEMORY=\"{{if (exists "/config/minmemory")}}-Xms{{getv "/config/minmemory}}{{end}} {{if (exists "/config/maxmemory")} -Xmx{{getv "/config/maxmemory}}{{end}}\" ${APP_HOME}/bin/activemq console"

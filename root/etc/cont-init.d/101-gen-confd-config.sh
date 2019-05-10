@@ -100,19 +100,6 @@ keys = [
 ]
 EOF
 
-cat << EOF > ${CONFD_HOME}/etc/conf.d/wrapper.conf.toml
-[template]
-prefix = "${CONFD_PREFIX_KEY}"
-src = "wrapper.conf.tmpl"
-dest = "${APP_HOME}/bin/linux-x86-64/wrapper.conf"
-mode = "0744"
-gid = $GID
-uid = $UID
-keys = [
-  "/config"
-]
-EOF
-
 cat << EOF > ${CONFD_HOME}/etc/conf.d/activemq.xml.toml
 [template]
 prefix = "${CONFD_PREFIX_KEY}"

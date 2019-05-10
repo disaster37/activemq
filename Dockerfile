@@ -9,6 +9,7 @@ ENV CONFD_PREFIX_KEY="/activemq" \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     LANG="en_US.utf8" \
     APP_HOME="/opt/activemq" \
+    ACTIVEMQ_DATA="/data" \
     APP_VERSION="5.15.2" \
     SCHEDULER_VOLUME="/opt/scheduler" \
     USER=activemq \
