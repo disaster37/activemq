@@ -1,11 +1,12 @@
 # Table of Contents
+- [Table of Contents](#table-of-contents)
+- [Credits](#credits)
 - [Introduction](#introduction)
-    - [Version](#version)
-    - [Changelog](Changelog.md)
+  - [Version](#version)
 - [Hardware Requirements](#hardware-requirements)
-    - [CPU](#cpu)
-    - [Memory](#memory)
-    - [Storage](#storage)
+  - [CPU](#cpu)
+  - [Memory](#memory)
+  - [Storage](#storage)
 - [Contributing](#contributing)
 - [Issues](#issues)
 - [Installation](#installation)
@@ -17,10 +18,14 @@
   - [Data Store](#data-store)
   - [BROKER](#broker)
   - [Disk usage](#disk-usage)
-  - [JMX](#JMX)
+  - [JMX](#jmx)
   - [Avaible Configuration Parameters](#avaible-configuration-parameters)
   - [Advance configuration](#advance-configuration)
-- [References](#references)
+
+# Credits 
+
+This project has been forked from https://github.com/disaster37/activemq.git , the associated docker hub is  webcenter/activemq
+The goal of the fork is to have the same image but updated to 5.16.3
 
 # Introduction
 
@@ -28,7 +33,7 @@ Dockerfile to build a ActiveMQ container image.
 
 ## Version
 
-Current Version: **5.14.3**
+Current Version: **5.16.3**
 
 # Hardware Requirements
 
@@ -98,19 +103,19 @@ In your issue report please make sure you provide the following information:
 Pull the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull webcenter/activemq:5.14.3
+docker pull ilyesaj/activemq:5.16.3
 ```
 
 You can also pull the `latest` tag which is built from the repository *HEAD*
 
 ```bash
-docker pull webcenter/activemq:latest
+docker pull ilyesaj/activemq:latest
 ```
 
 Alternately you can build the image locally.
 
 ```bash
-git clone https://github.com/disaster37/activemq.git
+git clone https://github.com/ilyesAj/activemq.git
 cd activemq
 docker build --tag="$USER/activemq" .
 ```
@@ -146,7 +151,7 @@ docker run --name='activemq' -d \
 -p 8161:8161 \
 -p 61616:61616 \
 -p 61613:61613 \
-webcenter/activemq:5.14.3
+ilyesaj/activemq:5.16.3
 ```
 
 
