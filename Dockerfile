@@ -1,4 +1,4 @@
-FROM webcenter/openjdk-jre:8
+FROM openjdk:11.0.11-jre
 MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
 ENV ACTIVEMQ_CONFIG_DIR /opt/activemq/conf.tmp
@@ -10,15 +10,18 @@ RUN apt-get update && \
     update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
     locale-gen en_US.UTF-8 && \
     dpkg-reconfigure locales && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean && apt-get autoremove --yes
 
+# Install wheel
+RUN pip install wheel
 # Install stompy
 RUN pip install stomp.py
 
 # Lauch app install
 COPY assets/setup/ /app/setup/
-RUN chmod +x /app/setup/install
-RUN /app/setup/install
+RUN chmod +x /app/setup/install && \
+     /app/setup/install
 
 
 # Copy the app setting
